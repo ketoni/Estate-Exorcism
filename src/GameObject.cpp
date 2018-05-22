@@ -3,7 +3,7 @@
 #include "Application.hpp"
 
 GameObject::GameObject() :
-click(), sprite(), text() {
+click(), sprite(), text(), health(1), vulnerable(false), destroyed(false) {
     loadTexture("placeholder.png");
 }
 
@@ -41,6 +41,11 @@ GameObject& GameObject::onClick(std::function<void(sf::Event::MouseButtonEvent)>
     return *this;
 }
 
+GameObject& GameObject::onDeath(std::function<void()> call) {
+    die = call;
+    return *this;
+}
+
 GameObject& GameObject::align(Alignment alignment) {
     auto position = sprite.getPosition();
     if (alignment == Alignment::Horizontal || alignment == Alignment::Both) {
@@ -50,5 +55,16 @@ GameObject& GameObject::align(Alignment alignment) {
         position.y = Application::context.view_size.y / 2;
     }
     sprite.setPosition(position);
+    return *this;
+}
+
+GameObject& GameObject::setHealth(int h) {
+    health = h;
+    vulnerable = true;
+    return *this;
+}
+
+GameObject& GameObject::setVulnerable(bool b) {
+    vulnerable = b;
     return *this;
 }

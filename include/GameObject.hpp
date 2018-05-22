@@ -23,13 +23,20 @@ class GameObject {
         GameObject& setPosition(float x, float y);
         GameObject& scale(float factor);
         GameObject& onClick(std::function<void(sf::Event::MouseButtonEvent)> call);
+        GameObject& onDeath(std::function<void()> call);
         GameObject& align(Alignment alignment);
+        GameObject& setHealth(int health);
+        GameObject& setVulnerable(bool b);
 
         // members
         std::function<void(sf::Event::MouseButtonEvent)> click;
+        std::function<void()> die;
         sf::Sprite sprite;
         sf::Text text;
 
+        int health;
+        bool vulnerable;
+        bool destroyed;
 };
 
 #endif // EXO_GAME_OBJECT_HPP
