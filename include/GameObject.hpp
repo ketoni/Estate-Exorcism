@@ -21,6 +21,7 @@ class GameObject {
         GameObject& loadTexture(std::string const& filepath, bool centered = false);
         GameObject& centerOrigin(bool b);
         GameObject& setPosition(float x, float y);
+        GameObject& scale(float factor);
         GameObject& onClick(std::function<void(sf::Event::MouseButtonEvent)> call);
         GameObject& align(Alignment alignment);
 

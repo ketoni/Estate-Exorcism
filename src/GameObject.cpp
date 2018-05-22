@@ -31,6 +31,11 @@ GameObject& GameObject::setPosition(float x, float y) {
     return *this;
 }
 
+GameObject& GameObject::scale(float factor) {
+    sprite.setScale({factor,factor});
+    return *this;
+}
+
 GameObject& GameObject::onClick(std::function<void(sf::Event::MouseButtonEvent)> call) {
     click = call;
     return *this;
