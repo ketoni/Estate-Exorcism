@@ -6,7 +6,7 @@
 void HomeState::enter() {
 
     // background
-    newGameObj().loadTexture("jotain.png");
+    newGameObj().loadTexture("homeroom.png");
 }
 
 void HomeState::resume() {
