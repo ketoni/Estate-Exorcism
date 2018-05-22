@@ -8,9 +8,10 @@ Application::Context Application::context;
 StateEngine Application::states;
 
 Application::Application() :
-_window({1440,1000}, "Estate Exorcism") {
+_window({960,760}, "Estate Exorcism") {
    _window.setFramerateLimit(60);
    context.window_size = _window.getSize();
+   context.view_size = _window.getView().getSize();
 
    states.changeState(HomeState());
    states.overlayState(StartState());

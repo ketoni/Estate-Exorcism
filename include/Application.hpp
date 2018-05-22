@@ -13,6 +13,7 @@ class Application {
 
         struct Context {
             sf::Vector2u window_size;
+            sf::Vector2f view_size;
         };
 
         static Context context;

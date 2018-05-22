@@ -44,10 +44,10 @@ GameObject& GameObject::onClick(std::function<void(sf::Event::MouseButtonEvent)>
 GameObject& GameObject::align(Alignment alignment) {
     auto position = sprite.getPosition();
     if (alignment == Alignment::Horizontal || alignment == Alignment::Both) {
-        position.x = Application::context.window_size.x / 2;
+        position.x = Application::context.view_size.x / 2;
     }
     if (alignment == Alignment::Vertical || alignment == Alignment::Both) {
-        position.y = Application::context.window_size.y / 2;
+        position.y = Application::context.view_size.y / 2;
     }
     sprite.setPosition(position);
     return *this;
