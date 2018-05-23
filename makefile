@@ -10,7 +10,7 @@ LFLAGS = -lsfml-window -lsfml-graphics -lsfml-audio -lsfml-system -lsfml-network
 
 SOURCES = $(wildcard $(SOURCE_PATH)/*.cpp)
 OBJECTS = $(SOURCES:.cpp=.o)
-DEPENDS = $(addprefix $(SOURCE_PATH)/.,$(subst .o,.dep,$(notdir $(OBJECTS))))
+DEPENDS = $(addprefix $(SOURCE_PATH)/.,$(subst .o,.cpp.dep,$(notdir $(OBJECTS))))
 
 all: $(SOURCES) $(EXECUTABLE)
 
