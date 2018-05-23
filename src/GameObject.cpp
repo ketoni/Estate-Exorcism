@@ -58,6 +58,11 @@ GameObject& GameObject::onDeath(std::function<void()> call) {
     return *this;
 }
 
+GameObject& GameObject::destroyOnDeath() {
+    onDeath([=]() { destroyed = true; });
+    return *this;
+}
+
 GameObject& GameObject::align(Alignment alignment) {
     auto position = sprite.getPosition();
     if (alignment == Alignment::Horizontal || alignment == Alignment::Both) {

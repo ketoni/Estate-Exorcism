@@ -27,6 +27,7 @@ class GameObject {
         GameObject& scale(float factor);
         GameObject& onClick(std::function<void(sf::Event::MouseButtonEvent)> call);
         GameObject& onDeath(std::function<void()> call);
+        GameObject& destroyOnDeath();
         GameObject& align(Alignment alignment);
         GameObject& setHealth(int health);
         GameObject& setVulnerable(bool b);

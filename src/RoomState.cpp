@@ -16,13 +16,15 @@ void RoomState::enter() {
     // Player sprite
     newGameObj().loadTexture("exomage.png")
                 .setPosition(100,250)
-                .setHealth(50);
+                .setHealth(50)
+                .destroyOnDeath();
 
     // Create a test monster
     _num_monsters++; 
     newGameObj().loadTexture("tulimonsu.png")
                 .setPosition(350,300)
                 .setHealth(10)
+                .destroyOnDeath()
                 .onDeath([&]() { --_num_monsters; });  
 
 }
