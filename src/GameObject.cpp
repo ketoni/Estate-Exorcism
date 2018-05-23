@@ -3,8 +3,20 @@
 #include "Application.hpp"
 
 GameObject::GameObject() :
-click(), sprite(), text(), health(1), vulnerable(false), destroyed(false) {
+health(1), vulnerable(false), destroyed(false) {
     loadTexture("placeholder.png");
+}
+
+void GameObject::clicked(sf::Event::MouseButtonEvent event) const {
+    for (auto callback : click_callbacks) {
+        callback(event);
+    }
+}
+
+void GameObject::die() const {
+    for (auto callback : death_callbacks) {
+        callback();
+    }
 }
 
 GameObject& GameObject::loadTexture(std::string const& filepath, bool centered) {
@@ -37,12 +49,12 @@ GameObject& GameObject::scale(float factor) {
 }
 
 GameObject& GameObject::onClick(std::function<void(sf::Event::MouseButtonEvent)> call) {
-    click = call;
+    click_callbacks.push_back(call);
     return *this;
 }
 
 GameObject& GameObject::onDeath(std::function<void()> call) {
-    die = call;
+    death_callbacks.push_back(call);
     return *this;
 }
 

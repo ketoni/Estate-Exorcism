@@ -13,14 +13,17 @@ void RoomState::enter() {
     // Bakground image
     newGameObj().loadTexture("olohuone.png");
 
+    // Player sprite
+    newGameObj().loadTexture("exomage.png")
+                .setPosition(100,250)
+                .setHealth(50);
+
     // Create a test monster
-    auto& mons = newGameObj();
     _num_monsters++; 
-    mons.loadTexture("tulimonsu.png")
-        .setHealth(10)
-        .setPosition(350,300)
-        .onClick([&](auto args) { mons.health -= 3; })
-        .onDeath([&]() { mons.destroyed = true; --_num_monsters; });  
+    newGameObj().loadTexture("tulimonsu.png")
+                .setPosition(350,300)
+                .setHealth(10)
+                .onDeath([&]() { --_num_monsters; });  
 
 }
 

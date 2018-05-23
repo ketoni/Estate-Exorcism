@@ -8,18 +8,18 @@ void StartState::enter() {
     newGameObj().loadTexture("nappula.png", true)
                 .setPosition(0,150)
                 .align(GameObject::Alignment::Horizontal)
-                .click = [=](auto args) {
+                .onClick([=](auto args) { 
                     terminate();
-                };
+                });
 
     // exit button
     newGameObj().loadTexture("nappula.png", true)
                 .setPosition(0,210)
                 .align(GameObject::Alignment::Horizontal)
-                .click = [=](auto args) {
+                .onClick([=](auto args) {
                     quit = true;
                     terminate();
-                };
+                });
 
 }
 

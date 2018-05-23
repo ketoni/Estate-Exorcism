@@ -41,8 +41,8 @@ void Window::draw(GameObject& object) {
 void Window::handleGameEvent(std::vector<GameObject> const& objects, sf::Event::MouseButtonEvent event) {
     auto click_pos = mapPixelToCoords({event.x, event.y});
     for (auto const& object : objects) {
-        if (object.click && object.sprite.getGlobalBounds().contains(click_pos)) {
-            object.click(event);
+        if (object.sprite.getGlobalBounds().contains(click_pos)) {
+            object.clicked(event);
         }
     }
 }

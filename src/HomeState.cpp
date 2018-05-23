@@ -13,21 +13,21 @@ void HomeState::enter() {
 
     // spellbook
     newGameObj().setPosition(315,130)
-                .click = [=](auto args) {
+                .onClick([=](auto args) {
                     Application::states.overlayState(SpellbookState());
-                };
+                });
 
     // monster manual
     newGameObj().setPosition(400,200)
-                .click = [=](auto args) {
+                .onClick([=](auto args) {
                     Application::states.overlayState(NotebookState());
-                };
+                });
 
     // letters
     newGameObj().setPosition(150,270)
-                .click = [=](auto args) {
+                .onClick([=](auto args) {
                     Application::states.changeState(RoomState(0));
-                };
+                });
 
 }
 

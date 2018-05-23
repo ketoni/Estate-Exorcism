@@ -10,7 +10,5 @@ void SpellbookState::enter() {
 
     // Exit button
     newGameObj().setPosition(400,300)
-                .click = [=](auto args) {
-                    terminate();
-                };
+                .onClick([=](auto args) { terminate(); });
 }

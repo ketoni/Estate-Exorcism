@@ -17,6 +17,9 @@ class GameObject {
             Both,
         };
 
+        void clicked(sf::Event::MouseButtonEvent event) const;
+        void die() const;
+
         // chained untility functions
         GameObject& loadTexture(std::string const& filepath, bool centered = false);
         GameObject& centerOrigin(bool b);
@@ -29,14 +32,15 @@ class GameObject {
         GameObject& setVulnerable(bool b);
 
         // members
-        std::function<void(sf::Event::MouseButtonEvent)> click;
-        std::function<void()> die;
         sf::Sprite sprite;
         sf::Text text;
 
         int health;
         bool vulnerable;
         bool destroyed;
+
+        std::vector<std::function<void(sf::Event::MouseButtonEvent)>> click_callbacks;
+        std::vector<std::function<void()>> death_callbacks;
 };
 
 #endif // EXO_GAME_OBJECT_HPP
