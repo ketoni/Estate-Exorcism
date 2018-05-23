@@ -4,6 +4,7 @@
 #include "StartState.hpp"
 #include "SpellbookState.hpp"
 #include "NotebookState.hpp"
+#include "RoomState.hpp"
 
 void HomeState::enter() {
 
@@ -25,7 +26,7 @@ void HomeState::enter() {
     // letters
     newGameObj().setPosition(150,270)
                 .click = [=](auto args) {
-                    // TODO
+                    Application::states.changeState(RoomState(0));
                 };
 
 }
