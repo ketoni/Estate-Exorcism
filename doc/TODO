@@ -1,12 +1,10 @@
 
 * SpellBookState
-    - Create the state
     - Add contents and/or images
     - Needs the spells to be decided
     - Define how the game knows which spells the player has learned
 
 * MonsterManualState
-    - Create the state
     - Add contents and/or images
     - Needs the monsters to be decided
     - Define how the game knows which monsters the player has encountered
@@ -17,9 +15,8 @@
     - Define how the game knows which estates the player has cleared
 
 * HomeState
-    - Add buttons for spellbook, monster manual and the letters
-    - Place correct sprites for each of them
-    - Add borders or something to make them more visible
+    - Place correct sprites for each of the buttons
+    - Add borders or something to make buttons them more visible
     - Add subtle background animations (ask if the cat is animated already)
 
 * EstateState / RoomState
