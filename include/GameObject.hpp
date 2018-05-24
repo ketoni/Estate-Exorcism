@@ -4,6 +4,7 @@
 #include <functional>
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
+#include "Effect.hpp"
 
 class GameObject {
 
@@ -42,6 +43,7 @@ class GameObject {
 
         std::vector<std::function<void(sf::Event::MouseButtonEvent)>> click_callbacks;
         std::vector<std::function<void()>> death_callbacks;
+        std::vector<Effect> effects;
 };
 
 #endif // EXO_GAME_OBJECT_HPP

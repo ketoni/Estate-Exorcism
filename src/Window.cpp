@@ -30,8 +30,14 @@ void Window::handleEvents(std::vector<GameObject> const& objects) {
 }
 
 void Window::draw(GameObject& object) {
-    if (object.sprite.getTexture() != nullptr) {
+    if (object.effects.empty()) {
         sf::RenderWindow::draw(object.sprite);
+    }
+    for (auto& eff : object.effects) {
+        auto shader = eff.getShader();
+        if (shader) {
+            sf::RenderWindow::draw(object.sprite, shader);
+        }
     }
     if (object.text.getString() != "") {
         sf::RenderWindow::draw(object.text);

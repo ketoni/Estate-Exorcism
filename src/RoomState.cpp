@@ -50,6 +50,9 @@ void RoomState::update() {
             objs.erase(it);
             continue;
         }
+        for (auto& eff : it->effects) {
+            eff.update();
+        }
         it++;
     }
 }
