@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "GameObject.hpp"
+#include "Window.hpp"
 
 class State {
 
@@ -14,7 +15,8 @@ class State {
         virtual void resume() {}
         virtual void pause() {}
         virtual void exit() {}
-        virtual void update() {}
+
+        virtual void update();
 
         void terminate();
         bool isTerminating() const;
