@@ -3,19 +3,13 @@
 #include "Application.hpp"
 
 GameObject::GameObject() :
-health(1), vulnerable(false), destroyed(false) {
+destroyed(false) {
     loadTexture("placeholder.png");
 }
 
 void GameObject::clicked(sf::Event::MouseButtonEvent event) const {
     for (auto callback : click_callbacks) {
         callback(event);
-    }
-}
-
-void GameObject::die() const {
-    for (auto callback : death_callbacks) {
-        callback();
     }
 }
 
@@ -53,16 +47,6 @@ GameObject& GameObject::onClick(std::function<void(sf::Event::MouseButtonEvent)>
     return *this;
 }
 
-GameObject& GameObject::onDeath(std::function<void()> call) {
-    death_callbacks.push_back(call);
-    return *this;
-}
-
-GameObject& GameObject::destroyOnDeath() {
-    onDeath([=]() { destroyed = true; });
-    return *this;
-}
-
 GameObject& GameObject::align(Alignment alignment) {
     auto position = sprite.getPosition();
     if (alignment == Alignment::Horizontal || alignment == Alignment::Both) {
@@ -75,13 +59,3 @@ GameObject& GameObject::align(Alignment alignment) {
     return *this;
 }
 
-GameObject& GameObject::setHealth(int h) {
-    health = h;
-    vulnerable = true;
-    return *this;
-}
-
-GameObject& GameObject::setVulnerable(bool b) {
-    vulnerable = b;
-    return *this;
-}

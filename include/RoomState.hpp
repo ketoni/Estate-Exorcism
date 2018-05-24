@@ -2,6 +2,7 @@
 #define EXO_ROOM_STATE_HPP
 
 #include "State.hpp"
+#include "Monster.hpp"
 
 class RoomState : public State {
 
@@ -13,8 +14,10 @@ class RoomState : public State {
         void update() override;
 
     private:
+        Monster& newMonster(Monster::Type type);
+
         unsigned _rooms_left;
-        unsigned _num_monsters;
+        std::vector<Monster> _monsters;
 };
 
 #endif // EXO_ROOM_STATE_HPP

@@ -6,7 +6,7 @@
 RoomState::RoomState() : RoomState(0) {}
 
 RoomState::RoomState(unsigned num_rooms) :
-_rooms_left(num_rooms), _num_monsters(0) {}
+_rooms_left(num_rooms) {}
 
 void RoomState::enter() {
 
@@ -15,23 +15,22 @@ void RoomState::enter() {
 
     // Player sprite
     newGameObj().loadTexture("exomage.png")
-                .setPosition(100,250)
-                .setHealth(50)
-                .destroyOnDeath();
+                .setPosition(100,250);
+                //.setHealth(50)
+                //.destroyOnDeath();
 
     // Create a test monster
-    _num_monsters++; 
-    newGameObj().loadTexture("tulimonsu.png")
-                .setPosition(350,300)
-                .setHealth(10)
-                .destroyOnDeath()
-                .onDeath([&]() { --_num_monsters; });  
+    auto& mon = newMonster(Monster::Type::Slime);
+    mon.base().setPosition(350,300);
+                //.setHealth(10)
+                //.destroyOnDeath()
+                //.onDeath([&]() { --_num_monsters; });
 
 }
 
 void RoomState::update() {
 
-    if (!_num_monsters) {
+    if (_monsters.empty()) {
         if (!_rooms_left) {
             Application::states.changeState(HomeState());
         }
@@ -40,20 +39,25 @@ void RoomState::update() {
         }
     }
 
-    auto& objs = getGameObjects();
-    auto it = objs.begin();
-    while (it != objs.end()) {
+    auto it = _monsters.begin();
+    while (it != _monsters.end()) {
         if (it->vulnerable && it->health <= 0) {
             it->die();
         }
-        if (it->destroyed) {
-            objs.erase(it);
+        if (it->base().destroyed) {
+            _monsters.erase(it);
             continue;
         }
-        for (auto& eff : it->effects) {
+        for (auto& eff : it->base().effects) {
             eff.update();
         }
         it++;
     }
+
+    State::update();
 }
 
+Monster& RoomState::newMonster(Monster::Type type) {
+    _monsters.emplace_back(newGameObj(), type);
+    return _monsters.back();
+}
