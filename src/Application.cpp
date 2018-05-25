@@ -23,9 +23,10 @@ void Application::run() {
 
     while (states.update() && _window.isOpen()) {
         _window.clear();
-        states.drawAll(_window);
+        states.handDrawables(_window);
         _window.display();
-        _window.handleEvents(states.getUIObjects());
+        _window.pollEvents();
+        states.handObjects(_window);
     }
 
     states.flush();

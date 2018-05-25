@@ -10,25 +10,29 @@ sf::RenderWindow(mode, title) {
     setView(view);
 }
 
-void Window::handleEvents(std::vector<GameObject> const& objects) {
+void Window::pollEvents() {
+    _events.clear();
     sf::Event event;
     while (pollEvent(event)) {
+        _events.push_back(event);
+    }
+}
+
+void Window::handleEvents(GameObject const& object) {
+    for (auto& event : _events) { 
 
         // Game-related events
-        //
         if (event.type == sf::Event::MouseButtonPressed) {
-            handleGameEvent(objects, event.mouseButton);
+            handleGameEvent(object, event.mouseButton);
         }
         else if (event.type == sf::Event::KeyPressed) {
-            handleGameEvent(objects, event.key);
+            handleGameEvent(object, event.key);
         }
 
         //  Window-only events
-        //
         if (event.type == sf::Event::Closed) {
             close();
         }
-
     }
 }
 
@@ -47,19 +51,14 @@ void Window::draw(GameObject& object) {
     }
 }
 
-void Window::handleGameEvent(std::vector<GameObject> const& objects, sf::Event::MouseButtonEvent event) {
-    auto click_pos = mapPixelToCoords({event.x, event.y});
-    for (auto const& object : objects) {
-        if (object.sprite.getGlobalBounds().contains(click_pos)) {
-            object.clicked(event);
-        }
+void Window::handleGameEvent(GameObject const& object, sf::Event::MouseButtonEvent event) {
+    if (object.sprite.getGlobalBounds().contains(mapPixelToCoords({event.x, event.y}))) {
+        object.clicked(event);
     }
 }
 
-void Window::handleGameEvent(std::vector<GameObject> const& objects, sf::Event::KeyEvent event) {
-    for (auto const& object : objects) {
-        for (auto callback : object.keystroke_callbacks) {
-            callback(event);
-        }
+void Window::handleGameEvent(GameObject const& object, sf::Event::KeyEvent event) {
+    for (auto callback : object.keystroke_callbacks) {
+        callback(event);
     }
 }

@@ -29,19 +29,24 @@ void StateEngine::flush() {
     }
 }
 
-void StateEngine::drawAll(Window& renderer) {
+void StateEngine::handDrawables(Window& renderer) {
     for (auto& state_ref : _states) {
         for (auto& obj : state_ref.get().getGameObjects()) {
             renderer.draw(obj);
         }
+        while (state_ref.get().hasExtra()) {
+            renderer.draw(state_ref.get().getExtra());
+        }
     }
 }
 
-std::vector<GameObject> const& StateEngine::getUIObjects() const {
-    if (_states.empty()) {
-        throw std::runtime_error("No States to get objects from");
+void StateEngine::handObjects(Window& window) {
+    for (auto& obj : topState().getGameObjects()) {
+        window.handleEvents(obj);
     }
-    return topState().getGameObjects();
+    while (topState().hasExtra()) {
+        window.handleEvents(topState().getExtra());
+    }
 }
 
 void StateEngine::popState() {

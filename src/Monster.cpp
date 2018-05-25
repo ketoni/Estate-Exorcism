@@ -2,10 +2,9 @@
 #include "Monster.hpp"
 #include <iostream>
 
-Monster::Monster(GameObject& base, Type type) :
-type(type), health(5), max_health(5), vulnerable(true), _base_obj(base) {
+Monster::Monster(Type type) :
+type(type), health(5), max_health(1), vulnerable(true) {
 
-    GameObject& g = Monster::base();
     std::string texname;
 
     switch (type) {
@@ -34,14 +33,10 @@ type(type), health(5), max_health(5), vulnerable(true), _base_obj(base) {
             element = Elements::Neutral;
     }
 
-    g.loadTexture(texname);
+    loadTexture(texname);
     death_callbacks.push_back([](Monster& thiz) {
         thiz.destroyed = true;
     });
-}
-
-GameObject& Monster::base() {
-    return _base_obj.get();
 }
 
 void Monster::die() {
@@ -67,29 +62,6 @@ void Monster::reactTo(const Spell& spell) {
 }
 
 void Monster::addEffect(const Effect& eff) {
-    base().effects.push_back(eff);
+    effects.push_back(eff);
 }
 
-/*
-GameObject& GameObject::onDeath(std::function<void()> call) {
-    death_callbacks.push_back(call);
-    return *this;
-}
-
-GameObject& GameObject::destroyOnDeath() {
-    onDeath([=]() { destroyed = true; });
-    return *this;
-}
-
-GameObject& GameObject::setHealth(int h) {
-    health = h;
-    max_health = h;
-    vulnerable = true;
-    return *this;
-}
-
-GameObject& GameObject::setVulnerable(bool b) {
-    vulnerable = b;
-    return *this;
-}
-*/

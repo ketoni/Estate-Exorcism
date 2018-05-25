@@ -14,12 +14,23 @@ class RoomState : public State {
         void enter() override;
         void update() override;
 
+        bool hasExtra() override;
+        GameObject& getExtra() override;
+
     private:
         Monster& newMonster(Monster::Type type);
 
-        unsigned _rooms_left;
-        std::vector<Monster> _monsters;
         int _stage_index;
+        int _rooms_left;
+        std::vector<Monster> _monsters;
+
+        enum Extra {
+            Ready,
+            Polling,
+            End,
+        };
+        Extra _extra;
+        std::vector<Monster>::iterator _extra_it;
 };
 
 #endif // EXO_ROOM_STATE_HPP

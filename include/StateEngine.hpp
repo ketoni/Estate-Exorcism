@@ -20,9 +20,9 @@ class StateEngine {
 
         bool update();
         void flush();
-        void drawAll(Window& renderer);
-        std::vector<GameObject> const& getUIObjects() const;
 
+        void handDrawables(Window& renderer);
+        void handObjects(Window& renderer);
 
     private:
         template <typename StateType>

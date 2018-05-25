@@ -9,12 +9,15 @@ class Window : public sf::RenderWindow {
     public:
         Window(sf::VideoMode&& mode, std::string const& title);
 
-        void handleEvents(std::vector<GameObject> const& objects);
+        void pollEvents();
+        void handleEvents(GameObject const& objects);
         void draw(GameObject& object);
 
-        void handleGameEvent(std::vector<GameObject> const& objects, sf::Event::MouseButtonEvent event);
-        void handleGameEvent(std::vector<GameObject> const& objects, sf::Event::KeyEvent event);
+        void handleGameEvent(GameObject const& object, sf::Event::MouseButtonEvent event);
+        void handleGameEvent(GameObject const& object, sf::Event::KeyEvent event);
 
+    private:
+        std::vector<sf::Event> _events;
 };
 
 #endif // EXO_WINDOW_HPP

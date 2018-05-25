@@ -4,7 +4,7 @@
 #include "GameObject.hpp"
 #include "Spells.hpp"
 
-class Monster {
+class Monster : public GameObject {
 
     public:
 
@@ -17,29 +17,20 @@ class Monster {
             Player,
         };
 
-        Monster(GameObject& base, Type type);
+        Monster(Type type);
 
-        GameObject& base();
         void die();
         void reactTo(const Spell& spell);
         void addEffect(const Effect& effect);
-
-        // GameObject& onDeath(std::function<void()> call);
-        // GameObject& destroyOnDeath();
-        // GameObject& setHealth(int health);
-        // GameObject& setVulnerable(bool b);
 
         std::vector<std::function<void(Monster&)>> death_callbacks;
 
         Element element;
         Type type;
 
-        float health;
-        float max_health;
+        int health;
+        int max_health;
         bool vulnerable;
-
-    private:
-        std::reference_wrapper<GameObject> _base_obj;
 };
 
 #endif // EXO_MONSTER_HPP

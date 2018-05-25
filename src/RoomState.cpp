@@ -8,9 +8,9 @@
 RoomState::RoomState() {}
 
 RoomState::RoomState(int index, int rooms_left) :
-_stage_index(index)
+_stage_index(index), _rooms_left(rooms_left), _extra(Extra::Ready)
 {
-    _rooms_left = rooms_left;
+    _monsters.reserve(10); // TODO actual fix
 }
 
 void RoomState::enter() {
@@ -25,14 +25,14 @@ void RoomState::enter() {
         int which_monster = rand() % Monster::Type::Player;
         Monster::Type type = static_cast<Monster::Type>(which_monster);
         auto& monster = newMonster(type);
-        monster.base().setPosition(250+50*i,250-50*i);
+        monster.setPosition(250+50*i,250-50*i);
         std::cout << "Monster of type "<< which_monster << std::endl;
     }
 
 
     // Player object
     newMonster(Monster::Type::Player)
-    .base()
+    //.base()
     .setPosition(100,250)
     .onKeystroke([&](auto args) {
         if (args.code == sf::Keyboard::Num1) {
@@ -51,7 +51,6 @@ void RoomState::enter() {
             Spells::Electric.castOn(_monsters);
         }
     });
-
 }
 
 void RoomState::update() {
@@ -71,11 +70,11 @@ void RoomState::update() {
         if (it->vulnerable && it->health <= 0) {
             it->die();
         }
-        if (it->base().destroyed) {
+        if (it->destroyed) {
             _monsters.erase(it);
             continue;
         }
-        for (auto& eff : it->base().effects) {
+        for (auto& eff : it->effects) {
             eff.update();
         }
         it++;
@@ -84,7 +83,29 @@ void RoomState::update() {
     State::update();
 }
 
+bool RoomState::hasExtra() {
+    if (_monsters.size() && _extra != Extra::End) {
+        if (_extra == Extra::Ready) {
+            _extra_it = _monsters.begin();
+        }
+        return true;
+    }
+    _extra = Extra::Ready;
+    return false;
+}
+
+GameObject& RoomState::getExtra() {
+    auto& ret = *_extra_it++;
+    if (_extra_it == _monsters.end()) {
+        _extra = Extra::End;
+    } 
+    else {
+        _extra = Extra::Polling;
+    }
+    return ret;
+}
+
 Monster& RoomState::newMonster(Monster::Type type) {
-    _monsters.emplace_back(newGameObj(), type);
+    _monsters.emplace_back(type);
     return _monsters.back();
 }
