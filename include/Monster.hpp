@@ -14,12 +14,15 @@ class Monster {
             Slime,
             Garden,
             Wisp,
+            Player,
         };
 
         Monster(GameObject& base, Type type);
 
         GameObject& base();
         void die();
+        void reactTo(const Spell& spell);
+        void addEffect(const Effect& effect);
 
         // GameObject& onDeath(std::function<void()> call);
         // GameObject& destroyOnDeath();
@@ -29,6 +32,7 @@ class Monster {
         std::vector<std::function<void()>> death_callbacks;
 
         Element element;
+        Type type;
 
         int health;
         int max_health;

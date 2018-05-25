@@ -2,7 +2,7 @@
 #include "Monster.hpp"
 
 Monster::Monster(GameObject& base, Type type) :
-_base_obj(base) {
+type(type), health(5), max_health(5), vulnerable(true), _base_obj(base) {
 
     GameObject& g = Monster::base();
     std::string texname;
@@ -28,9 +28,15 @@ _base_obj(base) {
             texname = "wispinapot.png";
             element = Elements::Electric;
             break;
+        case Player:
+            texname = "exomage.png";
+            element = Elements::Neutral;
     }
 
     g.loadTexture(texname);
+    death_callbacks.push_back([&]() {
+        g.destroyed = true;
+    });
 }
 
 GameObject& Monster::base() {
@@ -44,6 +50,19 @@ void Monster::die() {
     }
 }
 
+void Monster::reactTo(const Spell& spell) {
+    if (spell.element.strong == element.type) {
+        health -= spell.strength * 2.f;
+    }
+    else if (spell.element.weak == element.type) {
+        health -= spell.strength * 0.5f;
+    }
+    addEffect(Effect::Flash(base(), spell.color, Effect::FastPulse));
+}
+
+void Monster::addEffect(const Effect& eff) {
+    base().effects.push_back(eff);
+}
 
 /*
 GameObject& GameObject::onDeath(std::function<void()> call) {
