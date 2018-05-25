@@ -19,6 +19,9 @@ void Window::handleEvents(std::vector<GameObject> const& objects) {
         if (event.type == sf::Event::MouseButtonPressed) {
             handleGameEvent(objects, event.mouseButton);
         }
+        else if (event.type == sf::Event::KeyPressed) {
+            handleGameEvent(objects, event.key);
+        }
 
         //  Window-only events
         //
@@ -49,6 +52,14 @@ void Window::handleGameEvent(std::vector<GameObject> const& objects, sf::Event::
     for (auto const& object : objects) {
         if (object.sprite.getGlobalBounds().contains(click_pos)) {
             object.clicked(event);
+        }
+    }
+}
+
+void Window::handleGameEvent(std::vector<GameObject> const& objects, sf::Event::KeyEvent event) {
+    for (auto const& object : objects) {
+        for (auto callback : object.keystroke_callbacks) {
+            callback(event);
         }
     }
 }

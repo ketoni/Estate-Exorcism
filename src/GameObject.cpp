@@ -47,6 +47,11 @@ GameObject& GameObject::onClick(std::function<void(sf::Event::MouseButtonEvent)>
     return *this;
 }
 
+GameObject& GameObject::onKeystroke(std::function<void(sf::Event::KeyEvent)> call) {
+    keystroke_callbacks.push_back(call);
+    return *this;
+}
+
 GameObject& GameObject::align(Alignment alignment) {
     auto position = sprite.getPosition();
     if (alignment == Alignment::Horizontal || alignment == Alignment::Both) {

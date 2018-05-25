@@ -26,6 +26,7 @@ class GameObject {
         GameObject& setPosition(float x, float y);
         GameObject& scale(float factor);
         GameObject& onClick(std::function<void(sf::Event::MouseButtonEvent)> call);
+        GameObject& onKeystroke(std::function<void(sf::Event::KeyEvent)> call);
         GameObject& align(Alignment alignment);
 
         // members
@@ -35,6 +36,7 @@ class GameObject {
         bool destroyed;
 
         std::vector<std::function<void(sf::Event::MouseButtonEvent)>> click_callbacks;
+        std::vector<std::function<void(sf::Event::KeyEvent)>> keystroke_callbacks;
         std::vector<Effect> effects;
 };
 

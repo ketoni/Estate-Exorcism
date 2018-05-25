@@ -13,6 +13,7 @@ class Window : public sf::RenderWindow {
         void draw(GameObject& object);
 
         void handleGameEvent(std::vector<GameObject> const& objects, sf::Event::MouseButtonEvent event);
+        void handleGameEvent(std::vector<GameObject> const& objects, sf::Event::KeyEvent event);
 
 };
 
