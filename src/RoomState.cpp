@@ -13,18 +13,31 @@ void RoomState::enter() {
     // Bakground image
     newGameObj().loadTexture("olohuone.png");
 
-    // Player sprite
-    newGameObj().loadTexture("exomage.png")
-                .setPosition(100,250);
-                //.setHealth(50)
-                //.destroyOnDeath();
+    // Player object
+    newMonster(Monster::Type::Player)
+    .base()
+    .setPosition(100,250)
+    .onKeystroke([&](auto args) {
+        if (args.code == sf::Keyboard::Num1) {
+            Spells::Fire.castOn(_monsters);
+        }
+        if (args.code == sf::Keyboard::Num2) {
+            Spells::Water.castOn(_monsters);
+        }
+        if (args.code == sf::Keyboard::Num3) {
+            Spells::Earth.castOn(_monsters);
+        }
+        if (args.code == sf::Keyboard::Num4) {
+            Spells::Wind.castOn(_monsters);
+        }
+        if (args.code == sf::Keyboard::Num5) {
+            Spells::Electric.castOn(_monsters);
+        }
+    });
 
     // Create a test monster
     auto& mon = newMonster(Monster::Type::Slime);
     mon.base().setPosition(350,300);
-                //.setHealth(10)
-                //.destroyOnDeath()
-                //.onDeath([&]() { --_num_monsters; });
 
 }
 
