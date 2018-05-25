@@ -4,7 +4,7 @@
 #include "StartState.hpp"
 #include "SpellbookState.hpp"
 #include "NotebookState.hpp"
-#include "RoomState.hpp"
+#include "LetterState.hpp"
 
 void HomeState::enter() {
 
@@ -26,7 +26,7 @@ void HomeState::enter() {
     // letters
     newGameObj().setPosition(150,270)
                 .onClick([=](auto args) {
-                    Application::states.changeState(RoomState(0));
+                    Application::states.overlayState(LetterState());
                 });
 
 }

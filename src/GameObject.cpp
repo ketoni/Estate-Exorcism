@@ -37,6 +37,11 @@ GameObject& GameObject::setPosition(float x, float y) {
     return *this;
 }
 
+GameObject& GameObject::setText(const std::string& t) {
+    text.setString(t);
+    return *this;
+}
+
 GameObject& GameObject::scale(float factor) {
     sprite.setScale({factor,factor});
     return *this;

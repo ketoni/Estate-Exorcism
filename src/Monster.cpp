@@ -1,5 +1,6 @@
 
 #include "Monster.hpp"
+#include <iostream>
 
 Monster::Monster(GameObject& base, Type type) :
 type(type), health(5), max_health(5), vulnerable(true), _base_obj(base) {
@@ -53,10 +54,15 @@ void Monster::die() {
 void Monster::reactTo(const Spell& spell) {
     if (spell.element.strong == element.type) {
         health -= spell.strength * 2.f;
+
     }
     else if (spell.element.weak == element.type) {
         health -= spell.strength * 0.5f;
     }
+    else {
+        health -= spell.strength;
+    }
+    std::cout << "Monster type " << (int)type << " Health: " << health << std::endl;
     addEffect(Effect::Flash(base(), spell.color, Effect::FastPulse));
 }
 

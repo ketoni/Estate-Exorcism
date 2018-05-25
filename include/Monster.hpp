@@ -34,8 +34,8 @@ class Monster {
         Element element;
         Type type;
 
-        int health;
-        int max_health;
+        float health;
+        float max_health;
         bool vulnerable;
 
     private:

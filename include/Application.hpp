@@ -16,6 +16,14 @@ class Application {
             sf::Vector2f view_size;
         };
 
+        struct StageData {
+            int room_amount;
+            int difficulty;
+            bool cleared;
+            std::string name;
+        };
+
+        static std::vector<StageData> stage_data;
         static Context context;
         static Resources resources;
         static StateEngine states;
