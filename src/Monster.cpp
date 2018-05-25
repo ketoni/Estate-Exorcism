@@ -35,8 +35,8 @@ type(type), health(5), max_health(5), vulnerable(true), _base_obj(base) {
     }
 
     g.loadTexture(texname);
-    death_callbacks.push_back([&]() {
-        g.destroyed = true;
+    death_callbacks.push_back([](Monster& thiz) {
+        thiz.destroyed = true;
     });
 }
 
@@ -47,7 +47,7 @@ GameObject& Monster::base() {
 void Monster::die() {
     vulnerable = false;
     for (auto callback : death_callbacks) {
-        callback();
+        callback(*this);
     }
 }
 
@@ -63,7 +63,7 @@ void Monster::reactTo(const Spell& spell) {
         health -= spell.strength;
     }
     std::cout << "Monster type " << (int)type << " Health: " << health << std::endl;
-    addEffect(Effect::Flash(base(), spell.color, Effect::FastPulse));
+    addEffect(Effect::Flash(spell.color, Effect::FastPulse));
 }
 
 void Monster::addEffect(const Effect& eff) {

@@ -28,7 +28,7 @@ class Effect {
         sf::Shader& setFragmentShader(const std::string& filename);
 
         // Static methods
-        static Effect Flash(GameObject& target, sf::Color color, Style style);
+        static Effect Flash(sf::Color color, Style style);
 
         // Static members
         static Style LinearFade;

@@ -40,7 +40,7 @@ sf::Shader& Effect::setFragmentShader(const std::string& filename) {
 }
 
 
-Effect Effect::Flash(GameObject& target, sf::Color c, Style style) {
+Effect Effect::Flash(sf::Color c, Style style) {
     float f = 0.7 / 255.f; // factor
 
     Effect eff;

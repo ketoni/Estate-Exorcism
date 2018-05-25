@@ -29,7 +29,7 @@ class Monster {
         // GameObject& setHealth(int health);
         // GameObject& setVulnerable(bool b);
 
-        std::vector<std::function<void()>> death_callbacks;
+        std::vector<std::function<void(Monster&)>> death_callbacks;
 
         Element element;
         Type type;
