@@ -2,7 +2,9 @@
 #include "State.hpp"
 
 State::State() :
-_terminating(false), _objects() {}
+_terminating(false), _objects() {
+    _objects.reserve(10); // TODO fix properly
+}
 
 State::~State() {}
 

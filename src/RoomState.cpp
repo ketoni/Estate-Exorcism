@@ -43,7 +43,7 @@ void RoomState::enter() {
 
 void RoomState::update() {
 
-    if (_monsters.empty()) {
+    if (_monsters.size() == 1 && _monsters.back().type == Monster::Type::Player) {
         if (!_rooms_left) {
             Application::states.changeState(HomeState());
         }

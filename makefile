@@ -27,4 +27,11 @@ clean:
 run: $(EXECUTABLE)
 	./$(EXECUTABLE)
 
+debug: $(EXECUTABLE)
+	gdb ./$(EXECUTABLE)
+
+memtest: $(EXECUTABLE)
+	valgrind ./$(EXECUTABLE)
+
+
 -include $(DEPENDS)
