@@ -11,6 +11,7 @@ class Window : public sf::RenderWindow {
 
         void pollEvents();
         void handleEvents(GameObject const& objects);
+        void draw(const sf::Drawable& drawable);
         void draw(GameObject& object);
 
         void handleGameEvent(GameObject const& object, sf::Event::MouseButtonEvent event);

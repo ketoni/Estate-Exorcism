@@ -27,9 +27,7 @@ class Application {
         static Context context;
         static Resources resources;
         static StateEngine states;
-
-    private:
-        Window _window;
+        static Window window;
 };
 
 #endif // EXO_APPLICATION_HPP

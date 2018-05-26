@@ -20,20 +20,22 @@ void RoomState::enter() {
     std::cout << "Stage index: "<< _stage_index << std::endl;
     int monster_amount = std::max(rand() % Application::stage_data[_stage_index].difficulty+1,1);
     std::cout << "Number of monsters: "<< monster_amount << std::endl;
+    sf::Vector2f pos = sf::Vector2f(250,300);
     for(int i = 0; i < monster_amount; ++i)
     {
         int which_monster = rand() % Monster::Type::Player;
         Monster::Type type = static_cast<Monster::Type>(which_monster);
         auto& monster = newMonster(type);
-        monster.setPosition(250+50*i,250-50*i);
+        monster.setPosition(pos.x+100*i,pos.y);
+        monster.health_bar.setPosition(pos.x+100*i,pos.y-20);
         std::cout << "Monster of type "<< which_monster << std::endl;
     }
 
-
+    sf::Vector2f pos2 = sf::Vector2f(100,250);
     // Player object
     newMonster(Monster::Type::Player)
     //.base()
-    .setPosition(100,250)
+    .setPosition(pos2.x,pos2.y)
     .onKeystroke([&](auto args) {
         if (args.code == sf::Keyboard::Num1) {
             Spells::Fire.castOn(_monsters);
@@ -51,6 +53,7 @@ void RoomState::enter() {
             Spells::Electric.castOn(_monsters);
         }
     });
+     _monsters.back().health_bar.setPosition(pos2.x,pos2.y-20);
 
 }
 
@@ -79,6 +82,14 @@ void RoomState::update() {
             eff.update(*it);
         }
         it->doAction(it->behavior, _monsters);
+        if(it->health < it->max_health)
+        {
+            Application::window.draw(it->health_bar);
+            sf::RectangleShape shape = it->health_bar;
+            shape.setFillColor(sf::Color(0,255,0,255));
+            shape.setSize(sf::Vector2f(it->health/it->max_health*shape.getSize().x,shape.getSize().y));
+            Application::window.draw(shape);
+        }
         it++;
     }
 
@@ -100,7 +111,7 @@ GameObject& RoomState::getExtra() {
     auto& ret = *_extra_it++;
     if (_extra_it == _monsters.end()) {
         _extra = Extra::End;
-    } 
+    }
     else {
         _extra = Extra::Polling;
     }

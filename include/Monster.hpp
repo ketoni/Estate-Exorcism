@@ -36,17 +36,18 @@ class Monster : public GameObject {
         void addEffect(const Effect& effect);
 
         std::vector<std::function<void(Monster&)>> death_callbacks;
+        sf::RectangleShape health_bar;
 
         Element element;
         Type type;
+
 
         std::vector<Spell> spells;
         sf::Clock attack_timer;
         float attack_interval;
         Behavior behavior;
-
-        int health;
-        int max_health;
+        float health;
+        float max_health;
         bool vulnerable;
 };
 

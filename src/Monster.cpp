@@ -4,7 +4,7 @@
 #include <math.h>
 
 Monster::Monster(Type type) :
-type(type), health(5), max_health(1), vulnerable(true) {
+type(type), health(5), max_health(5), vulnerable(true) {
 
     behavior = Behavior::AttackPlayer;
     attack_interval = 2.5f + fmod(std::rand(), 2.f) + fmod(std::rand(), 0.5f);
@@ -44,7 +44,14 @@ type(type), health(5), max_health(1), vulnerable(true) {
             element = Elements::Neutral;
             behavior = Behavior::Idle;
     }
+    //std::cout << "KOKOA ON "<<  sprite.getLocalBounds().width << std::endl;
     loadTexture(texname);
+    health_bar = sf::RectangleShape(sf::Vector2f(sprite.getTexture()->getSize().x,8));
+    health_bar.setFillColor(sf::Color(255,0,0,255));
+
+    death_callbacks.push_back([](Monster& thiz) {
+        thiz.destroyed = true;
+    });
 }
 
 void Monster::die() {
@@ -100,4 +107,3 @@ void Monster::reactTo(const Spell& spell) {
 void Monster::addEffect(const Effect& eff) {
     effects.push_back(eff);
 }
-

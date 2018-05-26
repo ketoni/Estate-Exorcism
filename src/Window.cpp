@@ -19,7 +19,7 @@ void Window::pollEvents() {
 }
 
 void Window::handleEvents(GameObject const& object) {
-    for (auto& event : _events) { 
+    for (auto& event : _events) {
 
         // Game-related events
         if (event.type == sf::Event::MouseButtonPressed) {
@@ -34,6 +34,10 @@ void Window::handleEvents(GameObject const& object) {
             close();
         }
     }
+}
+
+void Window::draw(const sf::Drawable& drawable){
+    sf::RenderWindow::draw(drawable);
 }
 
 void Window::draw(GameObject& object) {
