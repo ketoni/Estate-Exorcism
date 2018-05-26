@@ -14,7 +14,7 @@ sf::Texture const& Resources::getTexture(std::string const& filename) {
 
 sf::Font const& Resources::getFont(std::string const& filename) {
     if (_fonts.find(filename) == _fonts.end()) {
-        _fonts[filename].loadFromFile(_texture_path + filename);
+        _fonts[filename].loadFromFile(_font_path + filename);
     }
     return _fonts.at(filename);
 }

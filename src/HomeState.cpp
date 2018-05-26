@@ -9,22 +9,25 @@
 void HomeState::enter() {
 
     // background
-    newGameObj().loadTexture("homeroom.png");
+    newGameObj().loadTexture("homeroom_noasset.png");
 
     // spellbook
-    newGameObj().setPosition(315,130)
+    newGameObj().loadTexture("lecter.png", true)
+                .setPosition(327,185)
                 .onClick([=](auto args) {
                     Application::states.overlayState(SpellbookState());
                 });
 
     // monster manual
-    newGameObj().setPosition(400,200)
+    newGameObj().loadTexture("monstermanual.png", true)
+                .setPosition(290,290)
                 .onClick([=](auto args) {
                     Application::states.overlayState(NotebookState());
                 });
 
     // letters
-    newGameObj().setPosition(150,270)
+    newGameObj().loadTexture("letters.png", true)
+                .setPosition(215,295)
                 .onClick([=](auto args) {
                     Application::states.overlayState(LetterState());
                 });

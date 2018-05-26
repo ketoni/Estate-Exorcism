@@ -1,10 +1,15 @@
 
 #include "GameObject.hpp"
 #include "Application.hpp"
+#include <iostream>
 
 GameObject::GameObject() :
 destroyed(false) {
     loadTexture("placeholder.png");
+    text.setFont(Application::resources.getFont("arial.ttf"));
+    text.setColor(sf::Color(0,0,0,255));
+    text.setCharacterSize(13);
+    //text.setStyle(sf::Text::Bold);
 }
 
 void GameObject::clicked(sf::Event::MouseButtonEvent event) const {
@@ -34,11 +39,14 @@ GameObject& GameObject::centerOrigin(bool b) {
 
 GameObject& GameObject::setPosition(float x, float y) {
     sprite.setPosition(x,y);
+    text.setPosition(x,y);
     return *this;
 }
 
 GameObject& GameObject::setText(const std::string& t) {
     text.setString(t);
+    std::cout << "tallasta " << text.getLocalBounds().height << std::endl;
+    text.setOrigin(text.getLocalBounds().left+text.getLocalBounds().width/2, text.getLocalBounds().top+text.getLocalBounds().height/2);
     return *this;
 }
 
@@ -66,6 +74,6 @@ GameObject& GameObject::align(Alignment alignment) {
         position.y = Application::context.view_size.y / 2;
     }
     sprite.setPosition(position);
+    text.setPosition(position);
     return *this;
 }
-
