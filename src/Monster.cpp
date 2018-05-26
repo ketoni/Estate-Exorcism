@@ -47,18 +47,21 @@ void Monster::die() {
 }
 
 void Monster::reactTo(const Spell& spell) {
+    float knock = 6.f;
     if (spell.element.strong == element.type) {
         health -= spell.strength * 2.f;
-
+        knock = 12.f;
     }
     else if (spell.element.weak == element.type) {
         health -= spell.strength * 0.5f;
+        knock = 3.f;
     }
     else {
         health -= spell.strength;
     }
     std::cout << "Monster type " << (int)type << " Health: " << health << std::endl;
-    addEffect(Effect::Flash(spell.color, Effect::FastPulse));
+    addEffect(Effect::Flash(spell.color, Effect::LinearFade));
+    addEffect(Effect::Nudge(*this, {knock,0}, Effect::FastPulse));
 }
 
 void Monster::addEffect(const Effect& eff) {

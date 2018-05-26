@@ -75,7 +75,7 @@ void RoomState::update() {
             continue;
         }
         for (auto& eff : it->effects) {
-            eff.update();
+            eff.update(*it);
         }
         it++;
     }

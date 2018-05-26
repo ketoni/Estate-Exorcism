@@ -11,8 +11,6 @@ class Effect {
 
     public:
 
-        Effect(std::function<float(float)> value_func, std::function<void(float)> callback);
-
         // Public types
         typedef std::function<float(float)> Style;
         enum State {
@@ -22,13 +20,14 @@ class Effect {
         };
 
         // Methods
-        void update();
+        void update(GameObject& target);
 
         const sf::Shader* getShader();
         sf::Shader& setFragmentShader(const std::string& filename);
 
         // Static methods
         static Effect Flash(sf::Color color, Style style);
+        static Effect Nudge(GameObject& obj, const sf::Vector2f& amount, Style style);
 
         // Static members
         static Style LinearFade;
@@ -36,7 +35,7 @@ class Effect {
 
         // Members
         Style value_func;
-        std::function<void(float)> callback;
+        std::function<void(GameObject&, float)> callback;
         float duration;
 
     private:

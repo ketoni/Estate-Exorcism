@@ -7,21 +7,17 @@ Effect::Style Effect::LinearFade = [](float t) { return 1-t; };
 Effect::Style Effect::FastPulse = [](float t) { return 6.75*(1-t)*(1-t)*t; };
 
 Effect::Effect() :
-duration(0.5), _state(State::Ready) {}
+duration(0.3), _state(State::Ready) {}
 
-Effect::Effect(std::function<float(float)> func, std::function<void(float)> call) : Effect() {
-    value_func = func;
-    callback = call;
-}
-
-void Effect::update() {
+void Effect::update(GameObject& target) {
     if (_state == State::Running) {
         auto elapsed = _clock.getElapsedTime().asSeconds() / duration;
         if (elapsed > 1.f) {
+            callback(target, 0);
             _state = State::Finished;
         }
         else {
-            callback(value_func(elapsed));
+            callback(target, value_func(elapsed));
         }
     }
     else if (_state == State::Ready) {
@@ -39,14 +35,23 @@ sf::Shader& Effect::setFragmentShader(const std::string& filename) {
     return *_shader_ptr;
 }
 
-
 Effect Effect::Flash(sf::Color c, Style style) {
     float f = 0.7 / 255.f; // factor
 
     Effect eff;
     auto& shader = eff.setFragmentShader("tint.frag");
-    eff.callback = [=, &shader](float v) {
+    eff.callback = [=, &shader](auto& obj, float v) {
         shader.setParameter("flashColor",c.r*f*v, c.g*f*v, c.b*f*v, c.a*f*v);
+    };
+    eff.value_func = style;
+    return eff;
+}
+
+Effect Effect::Nudge(GameObject& obj, const sf::Vector2f& amount, Style style) {
+    Effect eff;
+    auto orig_pos = obj.sprite.getPosition();
+    eff.callback = [=](auto& obj, float v) {
+        obj.sprite.setPosition(orig_pos + v * amount);
     };
     eff.value_func = style;
     return eff;
