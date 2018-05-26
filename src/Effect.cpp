@@ -14,7 +14,12 @@ void Effect::update(GameObject& target) {
         auto elapsed = _clock.getElapsedTime().asSeconds() / duration;
         if (elapsed > 1.f) {
             callback(target, 0);
-            _state = State::Finished;
+            if (loop) {
+                _clock.restart();
+            }
+            else {
+                _state = State::Finished;
+            }
         }
         else {
             callback(target, value_func(elapsed));

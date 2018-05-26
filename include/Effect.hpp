@@ -37,6 +37,7 @@ class Effect {
         Style value_func;
         std::function<void(GameObject&, float)> callback;
         float duration;
+        bool loop;
 
     private:
         Effect();
