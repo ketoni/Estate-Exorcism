@@ -17,9 +17,21 @@ class Monster : public GameObject {
             Player,
         };
 
+        enum Behavior {
+            Idle,
+            AttackPlayer,
+            AttackMonster,
+            AttackAny,
+        };
+
         Monster(Type type);
 
         void die();
+
+        void doAction(Behavior behavior, std::vector<Monster>& others);
+        void attackMonster(Monster& other);
+        bool canAttack();
+
         void reactTo(const Spell& spell);
         void addEffect(const Effect& effect);
 
@@ -27,6 +39,11 @@ class Monster : public GameObject {
 
         Element element;
         Type type;
+
+        std::vector<Spell> spells;
+        sf::Clock attack_timer;
+        float attack_interval;
+        Behavior behavior;
 
         int health;
         int max_health;

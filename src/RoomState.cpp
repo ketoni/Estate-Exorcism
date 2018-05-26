@@ -51,6 +51,7 @@ void RoomState::enter() {
             Spells::Electric.castOn(_monsters);
         }
     });
+
 }
 
 void RoomState::update() {
@@ -77,6 +78,7 @@ void RoomState::update() {
         for (auto& eff : it->effects) {
             eff.update(*it);
         }
+        it->doAction(it->behavior, _monsters);
         it++;
     }
 
