@@ -104,6 +104,3 @@ void Monster::reactTo(const Spell& spell) {
     addEffect(Effect::Nudge(*this, {knock,0}, Effect::FastPulse));
 }
 
-void Monster::addEffect(const Effect& eff) {
-    effects.push_back(eff);
-}

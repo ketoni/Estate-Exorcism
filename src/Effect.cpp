@@ -5,9 +5,10 @@
 
 Effect::Style Effect::LinearFade = [](float t) { return 1-t; };
 Effect::Style Effect::FastPulse = [](float t) { return 6.75*(1-t)*(1-t)*t; };
+Effect::Style Effect::SlowPulse = [](float t) { return 6.75*(1-t)*t*t; };
 
 Effect::Effect() :
-duration(0.3), _state(State::Ready) {}
+duration(0.3), loop(false), _state(State::Ready) {}
 
 void Effect::update(GameObject& target) {
     if (_state == State::Running) {
@@ -49,6 +50,19 @@ Effect Effect::Flash(sf::Color c, Style style) {
         shader.setParameter("flashColor",c.r*f*v, c.g*f*v, c.b*f*v, c.a*f*v);
     };
     eff.value_func = style;
+    return eff;
+}
+
+Effect Effect::Pulse(sf::Color c, float period) {
+    float f = 1.0 / 255.f; // factor
+    Effect eff;
+    eff.loop = true;
+    eff.duration = period;
+    auto& shader = eff.setFragmentShader("tint.frag");
+    eff.callback = [=, &shader](auto& obj, float v) {
+        shader.setParameter("flashColor",c.r*f*v, c.g*f*v, c.b*f*v, c.a*f*v);
+    };
+    eff.value_func = Effect::SlowPulse;
     return eff;
 }
 

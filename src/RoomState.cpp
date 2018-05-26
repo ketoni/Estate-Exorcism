@@ -78,9 +78,6 @@ void RoomState::update() {
             _monsters.erase(it);
             continue;
         }
-        for (auto& eff : it->effects) {
-            eff.update(*it);
-        }
         it->doAction(it->behavior, _monsters);
         if(it->health < it->max_health)
         {

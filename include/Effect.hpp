@@ -27,11 +27,13 @@ class Effect {
 
         // Static methods
         static Effect Flash(sf::Color color, Style style);
+        static Effect Pulse(sf::Color color, float pediod);
         static Effect Nudge(GameObject& obj, const sf::Vector2f& amount, Style style);
 
         // Static members
         static Style LinearFade;
         static Style FastPulse;
+        static Style SlowPulse;
 
         // Members
         Style value_func;

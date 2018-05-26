@@ -77,3 +77,8 @@ GameObject& GameObject::align(Alignment alignment) {
     text.setPosition(position);
     return *this;
 }
+
+GameObject& GameObject::addEffect(const Effect& eff) {
+    effects.push_back(eff);
+    return *this;
+}

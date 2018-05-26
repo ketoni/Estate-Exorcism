@@ -45,6 +45,7 @@ void Window::draw(GameObject& object) {
         sf::RenderWindow::draw(object.sprite);
     }
     for (auto& eff : object.effects) {
+        eff.update(object);
         auto shader = eff.getShader();
         if (shader) {
             sf::RenderWindow::draw(object.sprite, shader);

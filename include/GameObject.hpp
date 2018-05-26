@@ -29,6 +29,7 @@ class GameObject {
         GameObject& onClick(std::function<void(sf::Event::MouseButtonEvent)> call);
         GameObject& onKeystroke(std::function<void(sf::Event::KeyEvent)> call);
         GameObject& align(Alignment alignment);
+        GameObject& addEffect(const Effect& effect);
 
         // members
         sf::Sprite sprite;

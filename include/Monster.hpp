@@ -31,9 +31,7 @@ class Monster : public GameObject {
         void doAction(Behavior behavior, std::vector<Monster>& others);
         void attackMonster(Monster& other);
         bool canAttack();
-
         void reactTo(const Spell& spell);
-        void addEffect(const Effect& effect);
 
         std::vector<std::function<void(Monster&)>> death_callbacks;
         sf::RectangleShape health_bar;
