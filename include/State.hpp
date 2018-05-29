@@ -23,9 +23,6 @@ class State {
 
         std::vector<GameObject>& getGameObjects();
 
-        virtual bool hasExtra();
-        virtual GameObject& getExtra();
-
     protected:
         GameObject& newGameObj();
 

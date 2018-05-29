@@ -9,7 +9,7 @@
 RoomState::RoomState() {}
 
 RoomState::RoomState(int index, int rooms_left) :
-_stage_index(index), _rooms_left(rooms_left), _extra(Extra::Ready)
+_stage_index(index), _rooms_left(rooms_left) 
 {
     _monsters.reserve(10); // TODO actual fix
 }
@@ -97,6 +97,8 @@ void RoomState::monsterCycle() {
             _monsters.erase(it);
             continue;
         }
+
+        Application::window.draw(*it);
         if(it->health < it->max_health)
         {
             Application::window.draw(it->health_bar);
@@ -110,28 +112,6 @@ void RoomState::monsterCycle() {
     }
 
     State::update();
-}
-
-bool RoomState::hasExtra() {
-    if (_monsters.size() && _extra != Extra::End) {
-        if (_extra == Extra::Ready) {
-            _extra_it = _monsters.begin();
-        }
-        return true;
-    }
-    _extra = Extra::Ready;
-    return false;
-}
-
-GameObject& RoomState::getExtra() {
-    auto& ret = *_extra_it++;
-    if (_extra_it == _monsters.end()) {
-        _extra = Extra::End;
-    }
-    else {
-        _extra = Extra::Polling;
-    }
-    return ret;
 }
 
 Monster& RoomState::newMonster(Monster::Type type) {

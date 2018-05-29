@@ -32,14 +32,6 @@ std::vector<GameObject>& State::getGameObjects() {
     return _objects;
 }
 
-bool State::hasExtra() {
-    return false;
-}
-
-GameObject& State::getExtra() {
-    throw std::runtime_error("Cannot call getExtra() from State directly"); 
-}
-
 GameObject& State::newGameObj() {
     _objects.emplace_back();
     return _objects.back();

@@ -34,18 +34,12 @@ void StateEngine::handDrawables(Window& renderer) {
         for (auto& obj : state_ref.get().getGameObjects()) {
             renderer.draw(obj);
         }
-        while (state_ref.get().hasExtra()) {
-            renderer.draw(state_ref.get().getExtra());
-        }
     }
 }
 
 void StateEngine::handObjects(Window& window) {
     for (auto& obj : topState().getGameObjects()) {
         window.handleGameEvents(obj);
-    }
-    while (topState().hasExtra()) {
-        window.handleGameEvents(topState().getExtra());
     }
 }
 
