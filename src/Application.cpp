@@ -28,6 +28,7 @@ void Application::run() {
         states.handObjects(window);
         window.clear();
         states.handDrawables(window);
+        window.update();
     }
 
     states.flush();

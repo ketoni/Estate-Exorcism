@@ -1,6 +1,7 @@
 
 #include "RoomState.hpp"
 #include "HomeState.hpp"
+#include "DrawAnalyzer.hpp"
 #include <cstdlib>
 #include <algorithm>
 #include <iostream>
@@ -14,6 +15,8 @@ _stage_index(index), _rooms_left(rooms_left), _extra(Extra::Ready)
 }
 
 void RoomState::enter() {
+
+    Application::window.setDrawEnabled(true);
 
     // Bakground image
     newGameObj().loadTexture("olohuone.png");
@@ -35,26 +38,9 @@ void RoomState::enter() {
     // Player object
     newMonster(Monster::Type::Player)
     //.base()
-    .setPosition(pos2.x,pos2.y)
-    .onKeystroke([&](auto args) {
-        if (args.code == sf::Keyboard::Num1) {
-            Spells::Fire.castOn(_monsters);
-        }
-        if (args.code == sf::Keyboard::Num2) {
-            Spells::Water.castOn(_monsters);
-        }
-        if (args.code == sf::Keyboard::Num3) {
-            Spells::Earth.castOn(_monsters);
-        }
-        if (args.code == sf::Keyboard::Num4) {
-            Spells::Wind.castOn(_monsters);
-        }
-        if (args.code == sf::Keyboard::Num5) {
-            Spells::Electric.castOn(_monsters);
-        }
-    });
-     _monsters.back().health_bar.setPosition(pos2.x,pos2.y-20);
+    .setPosition(pos2.x,pos2.y);
 
+     _monsters.back().health_bar.setPosition(pos2.x,pos2.y-20);
 }
 
 void RoomState::update() {
@@ -69,8 +55,41 @@ void RoomState::update() {
         }
     }
 
+    auto drawn = Application::window.getDrawnShape();
+    if (drawn != DrawAnalyzer::Shape::None) {
+        if (drawn == DrawAnalyzer::Shape::Horizontal) {
+            Spells::Fire.castOn(_monsters);
+        }
+        else if (drawn == DrawAnalyzer::Shape::Vertical) {
+            Spells::Water.castOn(_monsters);
+        }
+        else if (drawn == DrawAnalyzer::Shape::Circle) {
+            Spells::Earth.castOn(_monsters);
+        }
+        else if (drawn == DrawAnalyzer::Shape::VeeUp) {
+            Spells::Wind.castOn(_monsters);
+        }
+        else if (drawn == DrawAnalyzer::Shape::VeeDown) {
+            Spells::Electric.castOn(_monsters);
+        }
+        else {
+            std::cout << "What?" << std::endl;
+        }
+    }
+
+    monsterCycle();
+    State::update();
+}
+
+void RoomState::exit() {
+    Application::window.setDrawEnabled(false);
+}
+
+void RoomState::monsterCycle() {
     auto it = _monsters.begin();
+
     while (it != _monsters.end()) {
+
         if (it->vulnerable && it->health <= 0) {
             it->die();
         }
@@ -78,7 +97,6 @@ void RoomState::update() {
             _monsters.erase(it);
             continue;
         }
-        it->doAction(it->behavior, _monsters);
         if(it->health < it->max_health)
         {
             Application::window.draw(it->health_bar);
@@ -87,7 +105,8 @@ void RoomState::update() {
             shape.setSize(sf::Vector2f(it->health/it->max_health*shape.getSize().x,shape.getSize().y));
             Application::window.draw(shape);
         }
-        it++;
+        it->doAction(it->behavior, _monsters);
+        ++it;
     }
 
     State::update();

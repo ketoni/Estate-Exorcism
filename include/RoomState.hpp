@@ -13,12 +13,14 @@ class RoomState : public State {
 
         void enter() override;
         void update() override;
+        void exit() override;
 
         bool hasExtra() override;
         GameObject& getExtra() override;
 
     private:
         Monster& newMonster(Monster::Type type);
+        void monsterCycle();
 
         int _stage_index;
         int _rooms_left;

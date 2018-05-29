@@ -42,10 +42,10 @@ void StateEngine::handDrawables(Window& renderer) {
 
 void StateEngine::handObjects(Window& window) {
     for (auto& obj : topState().getGameObjects()) {
-        window.handleEvents(obj);
+        window.handleGameEvents(obj);
     }
     while (topState().hasExtra()) {
-        window.handleEvents(topState().getExtra());
+        window.handleGameEvents(topState().getExtra());
     }
 }
 
