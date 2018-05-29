@@ -100,7 +100,7 @@ void Monster::reactTo(const Spell& spell) {
         health -= spell.strength;
     }
     std::cout << "Monster type " << (int)type << " Health: " << health << std::endl;
-    addEffect(Effect::Flash(spell.color, Effect::FastPulse));
-    addEffect(Effect::Nudge(*this, {knock,0}, Effect::FastPulse));
+    addEffect(Effect::Tint(spell.element.color, Effect::FastPulse));
+    addEffect(Effect::Move(*this, {knock,0}, Effect::FastPulse));
 }
 

@@ -10,6 +10,7 @@ class GameObject; // Forward declaration
 class Effect {
 
     public:
+        Effect(float duration = 0.3, bool loop = false);
 
         // Public types
         typedef std::function<float(float)> Style;
@@ -26,12 +27,17 @@ class Effect {
         sf::Shader& setFragmentShader(const std::string& filename);
 
         // Static methods
-        static Effect Flash(sf::Color color, Style style);
-        static Effect Pulse(sf::Color color, float pediod);
-        static Effect Nudge(GameObject& obj, const sf::Vector2f& amount, Style style);
+        static Effect Tint(sf::Color color, Style style);
+        static Effect Fade(Style style);
+        static Effect Move(GameObject& obj, const sf::Vector2f& amount, Style style);
 
         // Static members
-        static Style LinearFade;
+        static Style LinearIn;
+        static Style LinearOut;
+        static Style FastIn;
+        static Style FastOut;
+        static Style SlowIn;
+        static Style SlowOut;
         static Style FastPulse;
         static Style SlowPulse;
 
@@ -42,8 +48,6 @@ class Effect {
         bool loop;
 
     private:
-        Effect();
-
         std::shared_ptr<sf::Shader> _shader_ptr;
         sf::Clock _clock;
         State _state;
