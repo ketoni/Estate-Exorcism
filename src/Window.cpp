@@ -37,16 +37,15 @@ void Window::draw(const sf::Drawable& drawable){
 }
 
 void Window::draw(GameObject& object) {
-    if (object.effects.empty()) {
-        sf::RenderWindow::draw(object.sprite);
-    }
+    auto render_states = sf::RenderStates::Default;
     for (auto& eff : object.effects) {
         eff.update(object);
-        auto shader = eff.getShader();
-        if (shader) {
-            sf::RenderWindow::draw(object.sprite, shader);
+        if (eff.getShader()) {
+            render_states.shader = eff.getShader();
         }
     }
+    sf::RenderWindow::draw(object.sprite, render_states);
+
     if (object.text.getString() != "") {
         sf::RenderWindow::draw(object.text);
     }
