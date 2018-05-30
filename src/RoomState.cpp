@@ -12,6 +12,14 @@ RoomState::RoomState(int index, int rooms_left) :
 _stage_index(index), _rooms_left(rooms_left) 
 {
     _monsters.reserve(10); // TODO actual fix
+
+    _elements_available = {
+        Elements::Fire,
+        Elements::Water,
+        Elements::Earth,
+        Elements::Wind,
+        Elements::Electric,
+    };
 }
 
 void RoomState::enter() {
@@ -55,28 +63,7 @@ void RoomState::update() {
         }
     }
 
-    auto drawn = Application::window.getDrawnShape();
-    if (drawn != DrawAnalyzer::Shape::None) {
-        if (drawn == DrawAnalyzer::Shape::Horizontal) {
-            Spells::Fire.castOn(_monsters);
-        }
-        else if (drawn == DrawAnalyzer::Shape::Vertical) {
-            Spells::Water.castOn(_monsters);
-        }
-        else if (drawn == DrawAnalyzer::Shape::Circle) {
-            Spells::Earth.castOn(_monsters);
-        }
-        else if (drawn == DrawAnalyzer::Shape::VeeUp) {
-            Spells::Wind.castOn(_monsters);
-        }
-        else if (drawn == DrawAnalyzer::Shape::VeeDown) {
-            Spells::Electric.castOn(_monsters);
-        }
-        else {
-            std::cout << "What?" << std::endl;
-        }
-    }
-
+    spellCycle();
     monsterCycle();
     State::update();
 }
@@ -103,7 +90,7 @@ void RoomState::monsterCycle() {
         {
             Application::window.draw(it->health_bar);
             sf::RectangleShape shape = it->health_bar;
-            shape.setFillColor(sf::Color(0,255,0,255));
+            shape.setFillColor(sf::Color::Green);
             shape.setSize(sf::Vector2f(it->health/it->max_health*shape.getSize().x,shape.getSize().y));
             Application::window.draw(shape);
         }
@@ -114,7 +101,52 @@ void RoomState::monsterCycle() {
     State::update();
 }
 
+void RoomState::spellCycle() {
+
+    auto drawn = Application::window.getDrawnShape();
+    if (drawn != DrawAnalyzer::Shape::None) {
+        auto elem = determineElement(drawn);
+        if (elem.type != Element::Type::None) {
+            stackElement(elem);
+        }
+    }
+
+    for (auto& rune : _rune_stack) {
+        Application::window.draw(rune);
+    }
+}
+
 Monster& RoomState::newMonster(Monster::Type type) {
     _monsters.emplace_back(type);
     return _monsters.back();
+}
+
+Element RoomState::determineElement(DrawAnalyzer::Shape shape) {
+    for (auto& element : _elements_available) {
+        if (shape == element.shape) {
+            return element;
+        }
+    }
+    return { Element::Type::None };
+}
+
+void RoomState::stackElement(Element element) {
+    float rune_spacing = 40.f;
+
+    for (auto& rune : _rune_stack) {
+        rune.addEffect(Effect::Move(rune, {rune_spacing / -2, 0}, Effect::FastIn));
+    }
+
+    _rune_stack.emplace_back(element);
+    auto& rune = _rune_stack.back();
+    rune.loadTexture(rune.element.rune_texname, true)
+        .scale(0.5)
+        .align(GameObject::Alignment::Both)
+        .addEffect(Effect::Fade(Effect::FastIn));
+
+    float dx = (_rune_stack.size()-1) * rune_spacing * 0.5, dy = -150;
+    Effect move_eff = Effect::Move(rune, {dx,dy}, Effect::FastIn);
+    move_eff.duration = 0.7f;
+    rune.addEffect(move_eff);
+
 }

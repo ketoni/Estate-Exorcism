@@ -5,6 +5,14 @@
 #include "Monster.hpp"
 #include "Application.hpp"
 
+class Rune : public GameObject {
+
+    public:
+        Rune(Element e) : element(e) {}
+        Element element;
+};
+
+
 class RoomState : public State {
 
     public:
@@ -18,6 +26,12 @@ class RoomState : public State {
     private:
         Monster& newMonster(Monster::Type type);
         void monsterCycle();
+
+        void spellCycle();
+        Element determineElement(DrawAnalyzer::Shape shape);
+        void stackElement(Element element);
+        std::vector<Element> _elements_available;
+        std::vector<Rune> _rune_stack;
 
         int _stage_index;
         int _rooms_left;
