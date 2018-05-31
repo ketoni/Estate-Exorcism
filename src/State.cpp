@@ -32,7 +32,8 @@ std::vector<GameObject>& State::getGameObjects() {
     return _objects;
 }
 
-GameObject& State::newGameObj() {
+GameObject& State::newGameObject() {
     _objects.emplace_back();
     return _objects.back();
 }
+

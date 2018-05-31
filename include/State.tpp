@@ -1,52 +1,18 @@
 
-State::State() :
-_terminating(false), _paused(true), _objects() {}
-
-void State::enter() {
-    _paused = false;
+template <typename Object, typename ... Args>
+Object& State::newGameObject(Args&&... args) {
+    auto& v = accessGameObjects<Object>();
+    v.emplace_back(std::forward<Args>(args)...);
+    return v.back();
 }
 
-void State::resume() {
-    if (!_paused) {
-        return;
-    }
-    _paused = false;
+template <typename Object>
+std::vector<Object>& State::getGameObjects() {
+    return accessGameObjects<Object>();
 }
 
-void State::pause() {
-    if (_paused) {
-        return;
-    }
-    _paused = true;
-}
-
-void State::exit() {
-    _paused = true;
-}
-
-void State::update() {
-    if (_paused) {
-        return;
-    }
-}
-
-bool State::isTerminating() {
-    return _terminating;
-}
-
-bool State::isPaused() {
-    return _paused;
-}
-
-std::vector<GameObject> const& State::getGameObjects() {
-    return _objects;
-}
-
-void State::terminate() {
-    _terminating = true;
-}
-
-GameObject& State::addGameObject(GameObject&& obj) {
-    _objects.push_back(obj);
-    return _objects.back();
+template <typename Object>
+std::vector<Object>& State::accessGameObjects() {
+    static std::vector<Object> v;
+    return v;
 }

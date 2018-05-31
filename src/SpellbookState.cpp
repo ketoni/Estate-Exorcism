@@ -4,11 +4,14 @@
 void SpellbookState::enter() {
 
     // Spellbook sprite
-    newGameObj().loadTexture("spellbook.png")
-                .centerOrigin(true)
-                .align(GameObject::Alignment::Both);
+    newGameObject()
+        .loadTexture("spellbook.png", true)
+        .align(GameObject::Alignment::Both);
 
     // Exit button
-    newGameObj().setPosition(400,300)
-                .onClick([=](auto args) { terminate(); });
+    newGameObject()
+        .setPosition(400,300)
+        .onClick([=](auto args) {
+            terminate();
+        });
 }

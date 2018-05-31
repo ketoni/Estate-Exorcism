@@ -27,7 +27,9 @@ void RoomState::enter() {
     Application::window.setDrawEnabled(true);
 
     // Bakground image
-    newGameObj().loadTexture("olohuone.png");
+    newGameObject()
+        .loadTexture("olohuone.png");
+
     std::cout << "Stage index: "<< _stage_index << std::endl;
     int monster_amount = std::max(rand() % Application::stage_data[_stage_index].difficulty+1,1);
     std::cout << "Number of monsters: "<< monster_amount << std::endl;

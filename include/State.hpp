@@ -24,12 +24,22 @@ class State {
         std::vector<GameObject>& getGameObjects();
 
     protected:
-        GameObject& newGameObj();
+        GameObject& newGameObject();
+
+        template <typename Object, typename ... Args>
+        Object& newGameObject(Args&&... args);
+        template <typename Object>
+        std::vector<Object>& getGameObjects();
+
 
     private:
         bool _terminating;
         std::vector<GameObject> _objects;
 
+        template <typename Object>
+        std::vector<Object>& accessGameObjects();
 };
+
+#include "State.tpp"
 
 #endif // EXO_STATE_HPP

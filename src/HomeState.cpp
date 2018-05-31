@@ -9,28 +9,32 @@
 void HomeState::enter() {
 
     // background
-    newGameObj().loadTexture("homeroom_noasset.png");
+    newGameObject()
+        .loadTexture("homeroom_noasset.png");
 
     // spellbook
-    newGameObj().loadTexture("lecter.png", true)
-                .setPosition(327,185)
-                .onClick([=](auto args) {
-                    Application::states.overlayState(SpellbookState());
-                });
+    newGameObject()
+        .loadTexture("lecter.png", true)
+        .setPosition(327,185)
+        .onClick([=](auto args) {
+            Application::states.overlayState(SpellbookState());
+        });
 
     // monster manual
-    newGameObj().loadTexture("monstermanual.png", true)
-                .setPosition(290,290)
-                .onClick([=](auto args) {
-                    Application::states.overlayState(NotebookState());
-                });
+    newGameObject()
+        .loadTexture("monstermanual.png", true)
+        .setPosition(290,290)
+        .onClick([=](auto args) {
+            Application::states.overlayState(NotebookState());
+        });
 
     // letters
-    newGameObj().loadTexture("letters.png", true)
-                .setPosition(215,295)
-                .onClick([=](auto args) {
-                    Application::states.overlayState(LetterState());
-                });
+    newGameObject()
+        .loadTexture("letters.png", true)
+        .setPosition(215,295)
+        .onClick([=](auto args) {
+            Application::states.overlayState(LetterState());
+        });
 
 }
 
