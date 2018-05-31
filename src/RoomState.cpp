@@ -11,7 +11,7 @@ RoomState::RoomState() {}
 RoomState::RoomState(int index, int rooms_left) :
 _stage_index(index), _rooms_left(rooms_left) 
 {
-    _monsters.reserve(10); // TODO actual fix
+    //_monsters.reserve(10); // TODO actual fix
 
     _elements_available = {
         Elements::Fire,
@@ -38,24 +38,24 @@ void RoomState::enter() {
     {
         int which_monster = rand() % Monster::Type::Player;
         Monster::Type type = static_cast<Monster::Type>(which_monster);
-        auto& monster = newMonster(type);
-        monster.setPosition(pos.x+100*i,pos.y);
-        monster.health_bar.setPosition(pos.x+100*i,pos.y-20);
-        std::cout << "Monster of type "<< which_monster << std::endl;
+
+        auto& mon = newGameObject<Monster>(type);
+        mon.setPosition(pos.x+100*i,pos.y);
+        mon.health_bar.setPosition(pos.x+100*i,pos.y-20);
     }
 
     sf::Vector2f pos2 = sf::Vector2f(100,250);
-    // Player object
-    newMonster(Monster::Type::Player)
-    //.base()
-    .setPosition(pos2.x,pos2.y);
 
-     _monsters.back().health_bar.setPosition(pos2.x,pos2.y-20);
+    // Player object
+    auto& plr = newGameObject<Monster>(Monster::Type::Player);
+    plr.setPosition(pos2.x,pos2.y);
+    plr.health_bar.setPosition(pos2.x,pos2.y-20);
 }
 
 void RoomState::update() {
 
-    if (_monsters.size() == 1 && _monsters.back().type == Monster::Type::Player) {
+    auto& monsters = getGameObjects<Monster>();
+    if (monsters.size() == 1 && monsters.back().type == Monster::Type::Player) {
         if (!_rooms_left) {
             Application::stage_data[_stage_index].cleared = true;
             Application::states.changeState(HomeState());
@@ -75,15 +75,16 @@ void RoomState::exit() {
 }
 
 void RoomState::monsterCycle() {
-    auto it = _monsters.begin();
+    auto& monsters = getGameObjects<Monster>();
+    auto it = monsters.begin();
 
-    while (it != _monsters.end()) {
+    while (it != monsters.end()) {
 
         if (it->vulnerable && it->health <= 0) {
             it->die();
         }
         if (it->destroyed) {
-            _monsters.erase(it);
+            monsters.erase(it);
             continue;
         }
 
@@ -96,7 +97,7 @@ void RoomState::monsterCycle() {
             shape.setSize(sf::Vector2f(it->health/it->max_health*shape.getSize().x,shape.getSize().y));
             Application::window.draw(shape);
         }
-        it->doAction(it->behavior, _monsters);
+        it->doAction(it->behavior, monsters);
         ++it;
     }
 
@@ -113,14 +114,9 @@ void RoomState::spellCycle() {
         }
     }
 
-    for (auto& rune : _rune_stack) {
+    for (auto& rune : getGameObjects<Rune>()) {
         Application::window.draw(rune);
     }
-}
-
-Monster& RoomState::newMonster(Monster::Type type) {
-    _monsters.emplace_back(type);
-    return _monsters.back();
 }
 
 Element RoomState::determineElement(DrawAnalyzer::Shape shape) {
@@ -134,19 +130,19 @@ Element RoomState::determineElement(DrawAnalyzer::Shape shape) {
 
 void RoomState::stackElement(Element element) {
     float rune_spacing = 40.f;
+    auto& runes = getGameObjects<Rune>();
 
-    for (auto& rune : _rune_stack) {
+    for (auto& rune : runes) {
         rune.addEffect(Effect::Move(rune, {rune_spacing / -2, 0}, Effect::FastIn));
     }
 
-    _rune_stack.emplace_back(element);
-    auto& rune = _rune_stack.back();
+    auto& rune = newGameObject<Rune>(element);
     rune.loadTexture(rune.element.rune_texname, true)
         .scale(0.5)
         .align(GameObject::Alignment::Both)
         .addEffect(Effect::Fade(Effect::FastIn));
 
-    float dx = (_rune_stack.size()-1) * rune_spacing * 0.5, dy = -150;
+    float dx = (runes.size()-1) * rune_spacing * 0.5, dy = -150;
     Effect move_eff = Effect::Move(rune, {dx,dy}, Effect::FastIn);
     move_eff.duration = 0.7f;
     rune.addEffect(move_eff);
